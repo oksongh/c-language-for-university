@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+void make_upper(int width,int height,double mat[width][height]){
+  for(int k = 0;k < height-1;k++){
+    for(int i = k+1;i < height,i++){
+      double coeff = mat[i][k]/mat[k][k];
+      for(int j = k;k < width;j++){
+	mat[i][j] -= coeff*mat[k][k];
+      }
+    }
+  }
+  for(int i = 0;i < height;i++){
+    for(int j = 0;j < width;j++){
+      printf("%lf",mat[i][j]);
+    }
+  }
+}
+void gauss_eliminate(int width,int height,double mat[width][height]){
+  
+}
+int main(){
+  
+  double mat[3][4] = {{2,4,6,8},
+		      {3,8,7,15},
+		      {5,7,21,24}};
+  gauss_eliminate(3,4,mat);
+
+  return 0;
+}
