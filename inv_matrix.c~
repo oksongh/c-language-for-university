@@ -1,7 +1,8 @@
 #include <stdio.h>
-
+// #define N 3
+/*
 void make_upper(int width,int height,double mat[height][width]){
-  int i,j,k,ii,jj;
+  int i,j,k;
   for(k = 0;k < height-1;k++){
     for(i = k+1;i < height;i++){
       //printf("i:%d",i);
@@ -13,27 +14,28 @@ void make_upper(int width,int height,double mat[height][width]){
 	mat[i][j] -= coeff*mat[k][j];
       }
       
-      for(ii = 0;ii < height;ii++){
-	for(jj = 0;jj < width;jj++){
-	  printf("%lf ",mat[ii][jj]);
+      for(i = 0;i < height;i++){
+	for(j = 0;j < width;j++){
+	  printf("%lf ",mat[i][j]);
 	}
 	printf("\n");
       }
       printf("\n");
     }
   }
-  /*
+  
   for(int i = 0;i < height;i++){
     for(int j = 0;j < width;j++){
       printf("%lf ",mat[i][j]);
     }
     printf("\n");
   }
-  */
+  
 }
-void gauss_eliminate(int width,int height,double mat[height][width],double x[height]){
+void gauss_eliminate(int height,double matA[height][height],double vecb[height],double x[height]){
   //printf("aa,width:%d,height:%d\n",width,height);
   int i,j,k;
+  int width = height + 1;
   make_upper(width,height,mat);
   
   double b[height];
@@ -68,23 +70,15 @@ void gauss_eliminate(int width,int height,double mat[height][width],double x[hei
 
   
 }
+*/
 int main(){
-  
-  double mat[3][4] = {{2,4,6,6},
-		      {3,8,7,15},
-		      {5,7,21,24}};
-  int height = 3;
-  int width = 4;
-  double x[3] = {0,0,0};
 
-  int i,j;
-  for(i = 0;i < height;i++){
-    for(j = 0;j < width;j++){
-      printf("%lf ",mat[i][j]);
-    }
-    printf("\n");
-  }
-  gauss_eliminate(width,height,mat,x);
+double A[N][N] = {{2,4,6},{3,8,7},{5,7,21}};
+
+double b[N] = {6,15,24};
+int height = N;
+double x[N];
+gauss_eliminate(height,A,b,x);
 
   return 0;
 }
