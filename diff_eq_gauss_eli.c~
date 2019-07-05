@@ -1,0 +1,90 @@
+#include <stdio.h>
+
+void make_upper(int width,int height,double mat[height][width]){
+  int i,j,k,ii,jj;
+  for(k = 0;k < height-1;k++){
+    for(i = k+1;i < height;i++){
+      //printf("i:%d",i);
+      double coeff = mat[i][k]/mat[k][k];
+      //printf("coeff%lf",coeff);
+      
+      for(j = k;j < width;j++){
+	//printf("%lf\n",mat[i][j]);
+	mat[i][j] -= coeff*mat[k][j];
+      }
+      
+      for(ii = 0;ii < height;ii++){
+	for(jj = 0;jj < width;jj++){
+	  printf("%lf ",mat[ii][jj]);
+	}
+	printf("\n");
+      }
+      printf("\n");
+    }
+  }
+
+}
+void gauss_eliminate(int width,int height,double mat[height][width],double x[height]){
+  //printf("aa,width:%d,height:%d\n",width,height);
+  int i,j,k;
+  make_upper(width,height,mat);
+  
+  double b[height];
+  double A[height][height];
+  for(i = 0;i < height;i++){
+    b[i] = mat[i][width-1];
+  }
+  
+  for(i = 0;i < height;i++){
+    for(j = 0;j < width-1;j++){
+      A[i][j] = mat[i][j];
+    }
+  }
+  
+  int A_width = height;
+  int A_height = height;
+  
+  x[height-1] = b[A_height-1]/A[A_height-1][A_width-1];
+  
+  double buf = 0;
+  for(i = A_height-2;i >= 0;i--){
+    buf += b[i];
+    for(j = A_width-1;j >= 0;j--){
+      buf -= A[i][j]*x[j];
+    }
+    x[i] = buf/A[i][i];
+    buf = 0;
+  }
+  for(i = 0;i < A_height;i++){
+    printf("x[i] =%lf\n",x[i]);
+  }
+
+  
+}
+int main(){
+  double x[5];
+  double mat[3][4] = {{2,4,6,6},
+		      {3,8,7,15},
+		      {5,7,21,24}};
+  int height = 3;
+  int width = 4;
+  
+  int split = 4;
+  double y2[3] = {0,0,0};
+  double y0 = 0;
+  double y1 = 0;
+  int i,j;
+  
+  for(i = 0;i =< split,i++){
+    x[i] = i/split;
+  }
+  for(i = 0;i < height;i++){
+    for(j = 0;j < width;j++){
+      printf("%lf ",mat[i][j]);
+    }
+    printf("\n");
+  }
+  gauss_eliminate(width,height,mat,y);
+
+  return 0;
+}

@@ -1,10 +1,9 @@
 #include <stdio.h>
-#define N 3
 
 void print_vec(const int length,const double vec[length]){
   int i;
   for(i = 0;i < length;i++){
-    printf("%lf ",vec[i]);
+    printf("%lf \n",vec[i]);
     
   }
   printf("\n");
@@ -19,34 +18,14 @@ void print_mat(const int height,const int width,const double mat[height][width])
   }
   printf("\n");
 }
-void identity_mat(const int height,double matI[height][height]){
-  int i,j;
-  for(i = 0;i < height;i++){
-    for(j = 0;j < height;j++){
-      matI[i][j] = (i==j)?1:0;
-    }
 
-  }
-}
-void get_turn(const int height,const int width,const double mat[height][width],double t_mat[width][height]){
-  int i,j;
-  for(i = 0;i < height;i++){
-    for(j = 0;j < width;j++){
-      t_mat[j][i] = mat[i][j];
-    }
-  }
-    
-}
 void make_upper(const int height,const int width,double mat[height][width]){
   int i,j,k;
 
   for(k = 0;k < height-1;k++){
-
     for(i = k+1;i < height;i++){
 
       double coeff = mat[i][k]/mat[k][k];
-
-
       for(j = k;j < width;j++){
 
 	mat[i][j] -= coeff*mat[k][j];
@@ -60,6 +39,7 @@ void make_upper(const int height,const int width,double mat[height][width]){
   print_mat(height,width,mat);
   
 }
+
 void gauss_eliminate(const int A_height,const double matA[A_height][A_height],const double vecb[A_height],double x[A_height]){
   //printf("aa,width:%d,height:%d\n",width,height);
   int i,j,k;
@@ -102,32 +82,54 @@ void gauss_eliminate(const int A_height,const double matA[A_height][A_height],co
   print_vec(A_height,x);
   
 }
+int main(){
+    
+  const int split = 10;
+  
+  const int height = split - 1;
+  const int width = height;
+  const double h = 3.0 / split;
+  //const x_len = split + 1;
+  
+  double x[split + 1];
+  double mat[height][height];
+  double ans[split - 1];
+  double vecb[height];
+  //B.C.
+  x[0] = 0;
+  x[split] = 1.0;
+  //  double ans0 = 0;
+  //  double ans1 = 0;
 
-void get_inv_mat(const int height,const double A[height][height],double inv_A[height][height]){
-  int i;
-  double I[height][height];
-  double buf[height][height];
-  identity_mat(height,I);
-  //identity need no turn
-  for(i = 0;i < height;i++){
-    gauss_eliminate(height,A,I[i],buf[i]);
+  int i,j;
+  
+  for(i = 1;i < split;i++){
+   
+    x[i] = (double)i/split;
   }
-  get_turn(height,height,buf,inv_A);
+  printf("x:");
+  print_vec(split+1,x);
+  for(i = 0;i < height;i++){
+    vecb[i] = -2.0*h*h*x[i+1];
+  }
+  printf("vecb:");
+  print_vec(height,vecb);
+  for(i = 0;i < height;i++){
+    for(j = 0;j < width; j++){
+      if(i == j){
+	mat[i][j] = -4;
+      }else if(i == j + 1){
+	mat[i][j] = 2 + h;
+      }else if(i == j - 1){
+	mat[i][j] = 2 - h;	
+      }else{
+	mat[i][j] = 0;
+      }
+    }
+  }
   
-  
-}
-int main(void){
+  print_mat(height,width,mat);
+  gauss_eliminate(height,mat,vecb,ans);
 
-  double A[N][N] = {{2,4,6},
-		    {3,8,7},
-		    {5,7,21}};
-  
-  int height = N;
-  double inv_A[height][height];
-
-  get_inv_mat(height,A,inv_A);
-
-  printf("get inverse matrix\n");
-  print_mat(height,height,inv_A);
   return 0;
 }

@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef double (* FUNC)(double);
+
+central_difference(FUNC f){
+  return 
+}
+
+int main(){
+  FUNC f = exp;
+  double true_value_arg = 1.0;
+  double true_value = exp(true_value_arg);
+  
+  return 0;
+}
